@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.env
+.env.local
+.env.production
+*.pem
+.DS_Store
+
+# CDK
+infra/.venv/
+infra/cdk.out/
+infra/__pycache__/
+*.pyc
+
+# IDE
+.vscode/
+.idea/

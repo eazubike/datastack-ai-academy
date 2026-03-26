@@ -71,10 +71,24 @@ function App() {
         </div>
       </nav>
 
+      {/* Cohort Banner */}
+      <section className="pt-28 pb-0 px-6">
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-gradient-to-r from-blue-500/10 to-emerald-500/10 border border-blue-500/20 rounded-2xl p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div>
+              <div className="text-sm text-blue-400 font-medium mb-1">Next Cohort — April 2026</div>
+              <div className="text-white font-semibold">Starts April 14 · Tue &amp; Thu 7-9 PM + Sat 10 AM-12 PM</div>
+              <div className="text-sm text-gray-400 mt-1">Registration closes April 12 · Limited spots</div>
+            </div>
+            <a href="#apply" className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2.5 rounded-lg text-sm font-medium transition shrink-0">Register Now</a>
+          </div>
+        </div>
+      </section>
+
       {/* Hero */}
-      <section className="pt-32 pb-20 px-6">
+      <section className="pt-10 pb-20 px-6">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="inline-block px-4 py-1.5 bg-blue-500/10 border border-blue-500/20 rounded-full text-blue-400 text-sm mb-6">8 Weeks · Online · Beginner-Friendly</div>
+          <div className="inline-block px-4 py-1.5 bg-blue-500/10 border border-blue-500/20 rounded-full text-blue-400 text-sm mb-6">8 Weeks · Tue &amp; Thu Evenings + Sat Mornings · Online</div>
           <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
             Master <span className="bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent">Data + AI</span> in 8 Weeks
           </h1>

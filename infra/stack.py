@@ -1,4 +1,4 @@
-"""CDK Stack: API Gateway + Lambda + DynamoDB — supports test and prod environments."""
+"""CDK Stack: Full website hosting + API backend on AWS."""
 from aws_cdk import (
     Stack,
     Duration,
@@ -9,6 +9,12 @@ from aws_cdk import (
     aws_apigateway as apigw,
     aws_iam as iam,
     aws_s3 as s3,
+    aws_s3_deployment as s3deploy,
+    aws_cloudfront as cloudfront,
+    aws_cloudfront_origins as origins,
+    aws_certificatemanager as acm,
+    aws_route53 as route53,
+    aws_route53_targets as targets,
 )
 from constructs import Construct
 
@@ -18,6 +24,89 @@ class DataStackFormStack(Stack):
         super().__init__(scope, id, **kwargs)
 
         prefix = f"datastack-{env_name}"
+        domain_name = "datastackai.academy" if env_name == "prod" else None
+
+        # ---- Frontend Hosting (S3 + CloudFront) ----
+
+        # S3 bucket for website files
+        site_bucket = s3.Bucket(
+            self, "SiteBucket",
+            removal_policy=RemovalPolicy.DESTROY,
+            auto_delete_objects=True,
+            block_public_access=s3.BlockPublicAccess.BLOCK_ALL,
+        )
+
+        # SSL certificate + CloudFront (only for prod with domain)
+        certificate = None
+        if domain_name:
+            # Look up the hosted zone
+            hosted_zone = route53.HostedZone.from_lookup(
+                self, "Zone", domain_name=domain_name
+            )
+
+            # SSL certificate (must be in us-east-1 for CloudFront)
+            certificate = acm.Certificate(
+                self, "SiteCert",
+                domain_name=domain_name,
+                subject_alternative_names=[f"www.{domain_name}"],
+                validation=acm.CertificateValidation.from_dns(hosted_zone),
+            )
+
+        # CloudFront distribution
+        distribution = cloudfront.Distribution(
+            self, "SiteDistribution",
+            default_behavior=cloudfront.BehaviorOptions(
+                origin=origins.S3BucketOrigin.with_origin_access_control(site_bucket),
+                viewer_protocol_policy=cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+            ),
+            default_root_object="index.html",
+            error_responses=[
+                cloudfront.ErrorResponse(
+                    http_status=404,
+                    response_http_status=200,
+                    response_page_path="/index.html",
+                    ttl=Duration.seconds(0),
+                ),
+                cloudfront.ErrorResponse(
+                    http_status=403,
+                    response_http_status=200,
+                    response_page_path="/index.html",
+                    ttl=Duration.seconds(0),
+                ),
+            ],
+            domain_names=[domain_name, f"www.{domain_name}"] if domain_name else None,
+            certificate=certificate,
+        )
+
+        # Deploy built website to S3
+        s3deploy.BucketDeployment(
+            self, "DeploySite",
+            sources=[s3deploy.Source.asset("../dist")],
+            destination_bucket=site_bucket,
+            distribution=distribution,
+            distribution_paths=["/*"],
+        )
+
+        # Route 53 DNS records (prod only)
+        if domain_name and hosted_zone:
+            route53.ARecord(
+                self, "SiteARecord",
+                zone=hosted_zone,
+                target=route53.RecordTarget.from_alias(
+                    targets.CloudFrontTarget(distribution)
+                ),
+                record_name=domain_name,
+            )
+            route53.ARecord(
+                self, "SiteWwwRecord",
+                zone=hosted_zone,
+                target=route53.RecordTarget.from_alias(
+                    targets.CloudFrontTarget(distribution)
+                ),
+                record_name=f"www.{domain_name}",
+            )
+
+        # ---- Backend API ----
 
         # DynamoDB table for applications
         table = dynamodb.Table(
@@ -116,8 +205,9 @@ class DataStackFormStack(Stack):
         chat_resource = api.root.add_resource("chat")
         chat_resource.add_method("POST", apigw.LambdaIntegration(chat_fn))
 
-        # Output the API URL
-        CfnOutput(self, "ApiUrl",
-            value=api.url,
-            description=f"API Gateway URL ({env_name})",
-        )
+        # ---- Outputs ----
+
+        CfnOutput(self, "ApiUrl", value=api.url, description=f"API Gateway URL ({env_name})")
+        CfnOutput(self, "SiteUrl", value=f"https://{distribution.distribution_domain_name}", description="CloudFront URL")
+        if domain_name:
+            CfnOutput(self, "DomainUrl", value=f"https://{domain_name}", description="Custom domain URL")

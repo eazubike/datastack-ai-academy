@@ -94,7 +94,7 @@ function App() {
           </h1>
           <p className="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">From zero coding experience to a job-ready portfolio with 7 projects, deployed on AWS. The only bootcamp that teaches AI-native data engineering from Day 1.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="#apply" className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 rounded-xl text-lg font-semibold transition shadow-lg shadow-blue-500/25"><span className="line-through text-blue-200/60 mr-2">$1,499.99</span> $499.99 — Register Interest</a>
+            <a href="#apply" className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 rounded-xl text-lg font-semibold transition shadow-lg shadow-blue-500/25"><span className="line-through text-blue-200/60 mr-2">£1,500</span> £399.99 — Register Interest</a>
             <a href="#curriculum" className="border border-gray-700 hover:border-gray-500 text-gray-300 px-8 py-4 rounded-xl text-lg transition">View Curriculum</a>
           </div>
           <div className="mt-12 flex flex-wrap justify-center gap-6 text-sm text-gray-500">
@@ -210,8 +210,8 @@ function App() {
           <h2 className="text-3xl font-bold mb-8">Simple Pricing</h2>
           <div className="bg-gray-800/50 border border-gray-700/50 rounded-2xl p-8">
             <div className="flex items-baseline justify-center gap-3 mb-2">
-              <span className="text-2xl text-gray-500 line-through">$1,499.99</span>
-              <span className="text-5xl font-bold">$499<span className="text-2xl text-gray-400">.99</span></span>
+              <span className="text-2xl text-gray-500 line-through">£1,500</span>
+              <span className="text-5xl font-bold">£399<span className="text-2xl text-gray-400">.99</span></span>
             </div>
             <div className="inline-block bg-emerald-500/10 text-emerald-400 text-sm font-medium px-3 py-1 rounded-full mb-4">Save 67% — Limited Time</div>
             <div className="text-gray-400 mb-6">One-time payment · Lifetime access</div>

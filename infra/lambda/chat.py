@@ -15,7 +15,7 @@ CHAT_BUCKET = os.environ.get("CHAT_BUCKET", "")
 
 table = dynamodb.Table(CHAT_TABLE)
 
-SYSTEM_PROMPT = """You are the DataStack AI Academy assistant. You help prospective students learn about the course.
+SYSTEM_PROMPT = """You are Eche, the DataStack AI Academy assistant and course instructor. You help prospective students learn about the course. Speak in first person as the instructor — friendly, knowledgeable, and approachable.
 
 COURSE DETAILS:
 - Name: DataStack AI Academy

@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from 'react'
 export default function ChatWidget() {
   const [open, setOpen] = useState(false)
   const [messages, setMessages] = useState([
-    { role: 'assistant', content: "Hi! I'm the DataStack AI Academy assistant. Ask me anything about the course — curriculum, pricing, career outcomes, or prerequisites." }
+    { role: 'assistant', content: "Hey! I'm Eche, your DataStack AI Academy guide. Ask me anything about the course — curriculum, pricing, career outcomes, or prerequisites." }
   ])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
@@ -15,10 +15,15 @@ export default function ChatWidget() {
     return id
   })
   const messagesEndRef = useRef(null)
+  const inputRef = useRef(null)
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
+
+  useEffect(() => {
+    if (open) inputRef.current?.focus()
+  }, [open])
 
   const sendMessage = async (e) => {
     e.preventDefault()
@@ -55,6 +60,7 @@ export default function ChatWidget() {
       setMessages([...newMessages, { role: 'assistant', content: "Sorry, I couldn't connect. Please try again in a moment." }])
     }
     setLoading(false)
+    inputRef.current?.focus()
   }
 
   return (
@@ -79,7 +85,7 @@ export default function ChatWidget() {
           <div className="bg-gray-800 px-4 py-3 border-b border-gray-700 flex items-center gap-3">
             <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-sm">🤖</div>
             <div>
-              <div className="text-sm font-semibold text-white">DataStack AI Assistant</div>
+              <div className="text-sm font-semibold text-white">Ask Eche AI</div>
               <div className="text-xs text-emerald-400">Powered by AWS Bedrock</div>
             </div>
           </div>
@@ -110,6 +116,7 @@ export default function ChatWidget() {
           {/* Input */}
           <form onSubmit={sendMessage} className="p-3 border-t border-gray-700 flex gap-2">
             <input
+              ref={inputRef}
               type="text"
               value={input}
               onChange={e => setInput(e.target.value)}

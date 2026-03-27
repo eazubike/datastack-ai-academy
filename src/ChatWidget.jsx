@@ -45,7 +45,7 @@ export default function ChatWidget() {
         body: JSON.stringify({
           message: userMsg.content,
           sessionId,
-          history: newMessages.slice(-10).map(m => ({ role: m.role, content: m.content }))
+          history: messages.slice(1).slice(-10).map(m => ({ role: m.role, content: m.content }))
         }),
       })
 

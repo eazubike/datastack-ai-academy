@@ -45,11 +45,12 @@ class DataStackFormStack(Stack):
             )
 
             # SSL certificate (must be in us-east-1 for CloudFront)
-            certificate = acm.Certificate(
+            certificate = acm.DnsValidatedCertificate(
                 self, "SiteCert",
                 domain_name=domain_name,
                 subject_alternative_names=[f"www.{domain_name}"],
-                validation=acm.CertificateValidation.from_dns(hosted_zone),
+                hosted_zone=hosted_zone,
+                region="us-east-1",
             )
 
         # CloudFront distribution
@@ -135,7 +136,7 @@ class DataStackFormStack(Stack):
             timeout=Duration.seconds(10),
             environment={
                 "TABLE_NAME": table.table_name,
-                "SENDER_EMAIL": "hello@datastackai.academy",
+                "SENDER_EMAIL": "echeone@gmail.com",#"hello@datastackai.academy",
                 "ENV": env_name,
             },
         )
@@ -186,7 +187,7 @@ class DataStackFormStack(Stack):
             code=_lambda.Code.from_asset("lambda"),
             timeout=Duration.seconds(30),
             environment={
-                "MODEL_ID": "anthropic.claude-3-haiku-20240307-v1:0",
+                "MODEL_ID": "eu.anthropic.claude-haiku-4-5-20251001-v1:0",
                 "CHAT_TABLE": chat_table.table_name,
                 "CHAT_BUCKET": chat_bucket.bucket_name,
                 "ENV": env_name,
@@ -196,7 +197,19 @@ class DataStackFormStack(Stack):
         chat_fn.add_to_role_policy(
             iam.PolicyStatement(
                 actions=["bedrock:InvokeModel"],
-                resources=["arn:aws:bedrock:*::foundation-model/*"],
+                resources=[
+                    "arn:aws:bedrock:*::foundation-model/*",
+                    "arn:aws:bedrock:*:*:inference-profile/*",
+                ],
+            )
+        )
+        chat_fn.add_to_role_policy(
+            iam.PolicyStatement(
+                actions=[
+                    "aws-marketplace:ViewSubscriptions",
+                    "aws-marketplace:Subscribe",
+                ],
+                resources=["*"],
             )
         )
         chat_table.grant_write_data(chat_fn)

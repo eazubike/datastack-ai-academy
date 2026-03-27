@@ -9,7 +9,7 @@ bedrock = boto3.client("bedrock-runtime", region_name=os.environ.get("AWS_REGION
 dynamodb = boto3.resource("dynamodb")
 s3 = boto3.client("s3")
 
-MODEL_ID = os.environ.get("MODEL_ID", "anthropic.claude-3-haiku-20240307-v1:0")
+MODEL_ID = os.environ.get("MODEL_ID", "eu.anthropic.claude-haiku-4-5-20251001-v1:0")
 CHAT_TABLE = os.environ.get("CHAT_TABLE", "datastack-chat-sessions")
 CHAT_BUCKET = os.environ.get("CHAT_BUCKET", "")
 
@@ -119,9 +119,13 @@ def handler(event, context):
 
         history = body.get("history", [])[-10:]
 
-        # Build messages for Bedrock
+        # Build messages for Bedrock — must start with user role
         bedrock_messages = []
+        started = False
         for msg in history:
+            if not started and msg["role"] != "user":
+                continue  # skip leading assistant messages
+            started = True
             bedrock_messages.append({
                 "role": msg["role"],
                 "content": [{"text": msg["content"]}]

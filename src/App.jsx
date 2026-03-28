@@ -7,7 +7,7 @@ const weeks = [
   { num: 3, title: 'Python for Data + First AI Integration', desc: 'Master Pandas for data manipulation. Make your first real LLM API call from code.', project: 'API-to-Insight Pipeline with AI Summary', skills: ['Pandas', 'APIs', 'LLM APIs', 'Bedrock'] },
   { num: 4, title: 'Data Modeling, ETL & Data Quality', desc: 'Learn how production data systems are designed. Build a real ETL pipeline with quality checks.', project: 'Multi-Source ETL Pipeline', skills: ['Star Schema', 'ETL', 'Great Expectations', 'pytest'] },
   { num: 5, title: 'The AWS Cloud Data Platform', desc: 'Move to production cloud systems: S3, Glue, Redshift, Lambda, MWAA, dbt, and event-driven architecture.', project: 'Event-Driven Cloud Pipeline', skills: ['S3', 'Redshift', 'Glue', 'Lambda', 'dbt', 'MWAA', 'SNS', 'SQS', 'SES', 'Slack'] },
-  { num: 6, title: 'AI Deep Dive + BI Dashboards + Career Launch', desc: 'Master AI/LLM integrations, build professional dashboards, deploy with CDK, and prepare for the job market.', project: 'AI-Powered Dashboard with Daily Brief', skills: ['Bedrock', 'Text-to-SQL', 'RAG', 'Tableau/Power BI', 'CDK', 'CodePipeline'] },
+  { num: 6, title: 'AI Deep Dive + BI Dashboards + Career Launch', desc: 'Master AI/LLM integrations, build professional dashboards, deploy with CDK, and prepare for the job market.', project: 'AI-Powered Dashboard with Daily Brief', skills: ['Bedrock', 'Text-to-SQL', 'RAG', 'QuickSight', 'Power BI', 'CDK', 'CodePipeline'] },
   { num: '7-8', title: 'Capstone Project', desc: 'Build a complete, production-grade data project from scratch. This is the project you walk into interviews with.', project: 'Full End-to-End Data Platform', skills: ['Everything from Weeks 1-6'] },
 ]
 
@@ -77,8 +77,8 @@ function App() {
           <div className="bg-gradient-to-r from-blue-500/10 to-emerald-500/10 border border-blue-500/20 rounded-2xl p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div>
               <div className="text-sm text-blue-400 font-medium mb-1">Next Cohort — April 2026</div>
-              <div className="text-white font-semibold">Starts April 14 · Tue &amp; Thu 7-9 PM + Sat 10 AM-12 PM</div>
-              <div className="text-sm text-gray-400 mt-1">Registration closes April 12 · Limited spots</div>
+              <div className="text-white font-semibold">Starts April 28 · Tue &amp; Thu 7-9 PM + Sat 10 AM-12 PM</div>
+              <div className="text-sm text-gray-400 mt-1">Registration closes April 26 · Limited spots</div>
             </div>
             <a href="#apply" className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2.5 rounded-lg text-sm font-medium transition shrink-0">Register Now</a>
           </div>
@@ -102,6 +102,18 @@ function App() {
             <span>✓ 7 portfolio projects</span>
             <span>✓ Live instructor-led</span>
             <span>✓ Career support</span>
+          </div>
+        </div>
+      </section>
+
+      {/* Tools You'll Master */}
+      <section className="pb-12 px-6">
+        <div className="max-w-4xl mx-auto text-center">
+          <p className="text-sm text-gray-500 mb-6 uppercase tracking-wider">Tools You'll Master</p>
+          <div className="flex flex-wrap justify-center gap-4">
+            {['Python', 'SQL', 'AWS', 'PostgreSQL', 'Pandas', 'dbt', 'Docker', 'Git', 'Bedrock', 'QuickSight', 'Power BI', 'Redshift'].map((tool, i) => (
+              <span key={i} className="bg-gray-800/60 border border-gray-700/40 text-gray-300 text-sm px-4 py-2 rounded-full hover:border-blue-500/30 transition">{tool}</span>
+            ))}
           </div>
         </div>
       </section>
@@ -204,10 +216,38 @@ function App() {
         </div>
       </section>
 
+      {/* Instructor */}
+      <section className="py-20 px-6 bg-gray-900/50">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-12">Meet Your Instructor</h2>
+          <div className="flex flex-col md:flex-row items-center gap-8">
+            <div className="shrink-0">
+              <img src="/instructor.jpg" alt="Eche — Course Instructor" className="w-40 h-40 rounded-full object-cover border-2 border-blue-500/30" onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='flex' }} />
+              <div className="w-40 h-40 rounded-full bg-gradient-to-br from-blue-500/20 to-emerald-500/20 border-2 border-blue-500/30 items-center justify-center text-5xl hidden">👨‍💻</div>
+            </div>
+            <div>
+              <h3 className="text-xl font-bold mb-1">Eche</h3>
+              <p className="text-blue-400 text-sm mb-4">Senior BI Engineer @ Amazon · 10+ Years in Data</p>
+              <p className="text-gray-400 text-sm leading-relaxed mb-4">Senior Business Intelligence Engineer at Amazon with over a decade building enterprise-scale data pipelines, warehouses, and BI platforms. Previously led data teams at top-tier international banks. Now teaching everything learned in the real world — from SQL and Python to AWS, AI, and Power BI.</p>
+              <div className="flex flex-wrap gap-3">
+                {[
+                  { icon: '🏢', text: 'Amazon (current)' },
+                  { icon: '📊', text: '10+ years in data' },
+                  { icon: '🌍', text: '5000+ data sources integrated' },
+                  { icon: '🛠️', text: 'AWS · Python · SQL · Power BI' },
+                ].map((badge, i) => (
+                  <span key={i} className="text-xs bg-gray-800/60 border border-gray-700/40 text-gray-300 px-3 py-1.5 rounded-full">{badge.icon} {badge.text}</span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Pricing */}
       <section id="pricing" className="py-20 px-6 bg-gray-900/50">
         <div className="max-w-md mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-8">Simple Pricing</h2>
+          <h2 className="text-3xl font-bold mb-8">Invest in Your Future</h2>
           <div className="bg-gray-800/50 border border-gray-700/50 rounded-2xl p-8">
             <div className="flex items-baseline justify-center gap-3 mb-2">
               <span className="text-2xl text-gray-500 line-through">£1,500</span>
